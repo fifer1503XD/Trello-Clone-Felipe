@@ -5,7 +5,7 @@ from boards.models import Board
 class BoardSerializer(ModelSerializer):
     class Meta:
         model = Board
-        fields = ('id', 'name', 'description', 'owner')
+        fields = ('id', 'name', 'description', 'owner','members')
 
 
 class DetailBoardSerializer(ModelSerializer):

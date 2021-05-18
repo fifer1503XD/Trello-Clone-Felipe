@@ -67,7 +67,7 @@ class ListViewSet(ModelViewSet):
     def cards(self, request, pk=None):
         if request.method == 'GET':
             lists_detail = List.objects.get(id=pk)
-            cards = lists_detail.Card.all()
+            cards = lists_detail.Card.all().order_by('position')
             serialized = DetailCardSerializer(cards, many=True)
             return Response(
                 status=status.HTTP_200_OK,

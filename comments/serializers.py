@@ -12,4 +12,4 @@ class CommentSerializer(ModelSerializer):
 class DetailCommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'message', 'creation_date')
+        fields = ('id', 'message', 'creation_date','owner')

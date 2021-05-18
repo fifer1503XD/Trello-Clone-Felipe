@@ -8,7 +8,7 @@ from boards.serializers import BoardSerializer, DetailBoardSerializer
 from lists.serializers import DetailListSerializer
 from users.models import CustomUser
 from users.serializers import UsersDetailSerializer
-
+from cards.serializers import DetailCardSerializer
 
 class BoardViewSet(ModelViewSet):
     queryset = Board.objects.all()
@@ -53,9 +53,26 @@ class BoardViewSet(ModelViewSet):
     def lists(self, request, pk=None):
         if request.method == 'GET':
             board_detail = Board.objects.get(id=pk)
-            lists = board_detail.lists.all()
+            lists = board_detail.lists.all().order_by('position')
             serialized = DetailListSerializer(lists, many=True)
             return Response(
                 status=status.HTTP_200_OK,
                 data=serialized.data
+            )
+
+    @action(methods=['GET'], detail=True)
+    def cards(self, request, pk=None):
+        cards = []
+        if request.method == 'GET':
+            board_detail = Board.objects.get(id=pk)
+            lists = board_detail.lists.all().order_by('position')
+            print(lists)
+            for list in lists:
+                cards += list.Card.all().order_by('position')
+            print(cards)
+            serialized = DetailListSerializer(lists, many=True)
+            serialized2 = DetailCardSerializer(cards, many=True)
+            return Response(
+                status=status.HTTP_200_OK,
+                data=serialized2.data
             )
